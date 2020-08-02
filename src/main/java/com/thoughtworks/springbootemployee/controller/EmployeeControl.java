@@ -28,11 +28,13 @@ public class EmployeeControl {
     }
 
     @GetMapping("")
+    @ResponseStatus(HttpStatus.OK)
     public List<Employee> getEmployees() {
         return getAllData();
     }
 
     @PostMapping("")
+    @ResponseStatus(HttpStatus.CREATED)
     public Employee addEmployee(@RequestBody Employee employee) {
         employees.add(employee);
         return employee;
@@ -50,6 +52,7 @@ public class EmployeeControl {
     }
 
     @PutMapping("/{employeeId}")
+    @ResponseStatus(HttpStatus.CREATED)
     public Employee updateEmployee(@PathVariable Integer employeeId,@RequestBody Employee employee) {
         Employee specifiedEmployee=getSpecifiedIdEmployee(employeeId);
         if(specifiedEmployee!=null){
