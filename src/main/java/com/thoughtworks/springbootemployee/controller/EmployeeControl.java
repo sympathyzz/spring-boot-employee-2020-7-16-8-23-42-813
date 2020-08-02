@@ -31,16 +31,10 @@ public class EmployeeControl {
         return getAllData();
     }
 
-    @GetMapping("/{name}")
-    public Employee getSpecifiedNameEmployee(@PathVariable String name) {
-        return getAllData().stream().filter(employee -> employee.getName().equals(name)).collect(Collectors.toList()).get(0);
-    }
-
     @PostMapping("")
-    public List<Employee> addEmployee() {
-        Employee baiduEmployee = new Employee(5, "baidu1", 20, "male");
-        employees.add(baiduEmployee);
-        return employees;
+    public Employee addEmployee(@RequestBody Employee employee) {
+        employees.add(employee);
+        return employee;
     }
 
     @PutMapping("/{companyName}")
