@@ -1,6 +1,7 @@
 package com.thoughtworks.springbootemployee.controller;
 
 import com.thoughtworks.springbootemployee.model.Employee;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -37,22 +38,27 @@ public class EmployeeControl {
         return employee;
     }
 
-    @PutMapping("/{companyName}")
-    public void updateCompany(@PathVariable String employeeName, String newEmployeeName, Integer newEmployeesId,
-                              String newEmployeeGender, Integer newEmployeeSalary, Integer newEmployeeAge) {
-        Employee specifiedEmployee = getSpecifiedNameEmployee(employeeName);
-        if (newEmployeeName != null) {
-            specifiedEmployee.setName(newEmployeeName);
+    @GetMapping("/{employeeId}")
+    @ResponseStatus(HttpStatus.OK)
+    public Employee getSpecifiedIdEmployee(@PathVariable Integer employeeId){
+        for(Employee employee:getAllData()){
+            if (employee.getId()==employeeId){
+                return employee;
+            }
         }
-        if (newEmployeesId != null) {
-            specifiedEmployee.setId(newEmployeesId);
+        return null;
+    }
+
+    @PutMapping("/{employeeId}")
+    public Employee updateEmployee(@PathVariable Integer employeeId,@RequestBody Employee employee) {
+        Employee specifiedEmployee=getSpecifiedIdEmployee(employeeId);
+        if(specifiedEmployee!=null){
+            specifiedEmployee.setName(employee.getName());
+            specifiedEmployee.setGender(employee.getGender());
+            specifiedEmployee.setAge(employee.getAge());
+
         }
-        if (newEmployeeGender != null) {
-            specifiedEmployee.setGender(newEmployeeGender);
-        }
-        if (newEmployeeAge != null) {
-            specifiedEmployee.setAge(newEmployeeAge);
-        }
+        return specifiedEmployee;
     }
 
     @DeleteMapping("/{employeeName}")
