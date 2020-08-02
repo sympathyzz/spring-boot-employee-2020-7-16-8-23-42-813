@@ -10,13 +10,14 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/employees")
 public class EmployeeControl {
-    public static List<Employee> employees=new ArrayList<>();
-    public List<Employee> getAllData(){
-        Employee employee1=new Employee(1,"alibaba1",17,"male");
-        Employee employee2=new Employee(2,"alibaba2",18,"female");
-        Employee employee3=new Employee(3,"oocl1",19,"male");
-        Employee employee4=new Employee(4,"oocl2",20,"female");
-        if(employees.size()==0){
+    public static List<Employee> employees = new ArrayList<>();
+
+    public List<Employee> getAllData() {
+        Employee employee1 = new Employee(1, "alibaba1", 17, "male");
+        Employee employee2 = new Employee(2, "alibaba2", 18, "female");
+        Employee employee3 = new Employee(3, "oocl1", 19, "male");
+        Employee employee4 = new Employee(4, "oocl2", 20, "female");
+        if (employees.size() == 0) {
             employees.add(employee1);
             employees.add(employee2);
             employees.add(employee3);
@@ -26,49 +27,42 @@ public class EmployeeControl {
     }
 
     @GetMapping("")
-    public List<Employee> getEmployees(@RequestParam(defaultValue="null") String page, @RequestParam(defaultValue="null") String pageSize, String gender){
-        if(gender!=null){
-            return getAllData().stream().filter(employee -> employee.getGender().equals(gender)).collect(Collectors.toList());
-        }
-        if(!page.equals("null")&&!pageSize.equals("null")){
-            return getAllData().stream().skip((Integer.parseInt(page)-1)*Integer.parseInt(pageSize)).limit(Integer.parseInt(pageSize)).collect(Collectors.toList());
-        }else{
-            return getAllData();
-        }
-
+    public List<Employee> getEmployees() {
+        return getAllData();
     }
+
     @GetMapping("/{name}")
-    public Employee getSpecifiedNameEmployee(@PathVariable String name){
-        return getAllData().stream().filter(employee ->employee.getName().equals(name)).collect(Collectors.toList()).get(0);
+    public Employee getSpecifiedNameEmployee(@PathVariable String name) {
+        return getAllData().stream().filter(employee -> employee.getName().equals(name)).collect(Collectors.toList()).get(0);
     }
 
     @PostMapping("")
-    public List<Employee> addEmployee(){
+    public List<Employee> addEmployee() {
         Employee baiduEmployee = new Employee(5, "baidu1", 20, "male");
         employees.add(baiduEmployee);
         return employees;
     }
 
     @PutMapping("/{companyName}")
-    public void updateCompany(@PathVariable String employeeName,String newEmployeeName,Integer newEmployeesId,
-                              String newEmployeeGender,Integer newEmployeeSalary,Integer newEmployeeAge){
-        Employee specifiedEmployee= getSpecifiedNameEmployee(employeeName);
-        if(newEmployeeName!=null){
+    public void updateCompany(@PathVariable String employeeName, String newEmployeeName, Integer newEmployeesId,
+                              String newEmployeeGender, Integer newEmployeeSalary, Integer newEmployeeAge) {
+        Employee specifiedEmployee = getSpecifiedNameEmployee(employeeName);
+        if (newEmployeeName != null) {
             specifiedEmployee.setName(newEmployeeName);
         }
-        if(newEmployeesId!=null){
+        if (newEmployeesId != null) {
             specifiedEmployee.setId(newEmployeesId);
         }
-        if(newEmployeeGender!=null){
+        if (newEmployeeGender != null) {
             specifiedEmployee.setGender(newEmployeeGender);
         }
-        if(newEmployeeAge!=null){
+        if (newEmployeeAge != null) {
             specifiedEmployee.setAge(newEmployeeAge);
         }
     }
 
     @DeleteMapping("/{employeeName}")
-    public List<Employee> deleteEmployee(@PathVariable String employeeName){
+    public List<Employee> deleteEmployee(@PathVariable String employeeName) {
         getAllData().remove(getAllData().stream().filter(employee -> employee.getName().equals(employeeName)).collect(Collectors.toList()).get(0));
         return getAllData();
     }
